@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\models\Sauce;
 use App\models\User;
+use Illuminate\Support\Arr;
+
 
 class SauceController extends Controller
 {
@@ -87,8 +89,8 @@ class SauceController extends Controller
         $data = $request->all();
         $data['imageUrl'] = $imagePath;  
         $data['userId'] = auth()->id();  
-
-        Sauce::where('sauceId',$id)->update($data->except(['_token', '_method']));
+        $dataClean = Arr::except($data, ['_token', '_method']);
+        Sauce::where('sauceId',$id)->update($dataClean);
         return redirect()->route('sauces.index');
     }
 
